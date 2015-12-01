@@ -80,8 +80,25 @@ public class Robot extends SampleRobot {
     public void autonomous() {
         while (true)
         {
-        	topShooter.set(-1.0);
-        	botShooter.set(1.0);
+        	// if turned on
+        	if (switchBoyz2.get()){
+        		// full power
+        		if (!switchBoyz.get()){
+        			topShooter.set(1.0);
+        			botShooter.set(-1.0);
+        		}
+        		// half power
+        		else {
+        			topShooter.set(0.5);
+        			botShooter.set(-0.5);
+        		}
+        	}
+        	
+        	// off
+        	else {
+        		topShooter.set(0.0);
+        		botShooter.set(0.0);
+        	}
         }
     }
 
