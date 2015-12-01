@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends SampleRobot {
 	
+	// Declarations
     private DigitalOutput led;
     private SmartDashboard dash;
     private QuadratureEncoder topEnc;
@@ -40,6 +41,7 @@ public class Robot extends SampleRobot {
     private DigitalInput switchBoyz;
     private DigitalInput switchBoyz2;
     
+    // Constants
     private static final int SHOOTER_ENC_CPR = 2048;
     protected static final double DISTANCE_PER_REVOLUTION = 6 * Math.PI; // FOR DEFAULT DRIVE WHEELS
     private static final int TOP_ENC_I = 4;
@@ -65,8 +67,8 @@ public class Robot extends SampleRobot {
         botEnc.reset();
     	//*/
     	
-    	topShooter = new Victor(5);
-    	botShooter = new Victor(4);
+    	topShooter = new Victor(5); // we should probably make a final,
+    	botShooter = new Victor(4); // but what if it breaks when we change
     	
     	switchBoyz = new DigitalInput(SWITCHERINO);
     	switchBoyz2 = new DigitalInput(SWITCHERINO2);
@@ -88,16 +90,21 @@ public class Robot extends SampleRobot {
      */
     public void operatorControl() {
         while (isOperatorControl() && isEnabled()) {
+        	// if turned on
         	if (switchBoyz2.get()){
+        		// full power
         		if (!switchBoyz.get()){
         			topShooter.set(1.0);
         			botShooter.set(-1.0);
         		}
+        		// half power
         		else {
         			topShooter.set(0.5);
         			botShooter.set(-0.5);
         		}
         	}
+        	
+        	// off
         	else {
         		topShooter.set(0.0);
         		botShooter.set(0.0);
