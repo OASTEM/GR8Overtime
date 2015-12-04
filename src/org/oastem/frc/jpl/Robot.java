@@ -40,6 +40,7 @@ public class Robot extends SampleRobot {
     private Victor botShooter;
     private DigitalInput switchBoyz;
     private DigitalInput switchBoyz2;
+    private DigitalInput switchSide;
     
     // Constants
     private static final int SHOOTER_ENC_CPR = 2048;
@@ -52,6 +53,7 @@ public class Robot extends SampleRobot {
 	private static final int BOT_ENC_B = 0;
 	private static final int SWITCHERINO = 0;
 	private static final int SWITCHERINO2 = 1;
+	private static final int SWITCHERINO3 = 2;
 	
 	private static final double SHOOTING_SPEED = DISTANCE_PER_REVOLUTION * 5;
 
@@ -72,6 +74,7 @@ public class Robot extends SampleRobot {
     	
     	switchBoyz = new DigitalInput(SWITCHERINO);
     	switchBoyz2 = new DigitalInput(SWITCHERINO2);
+    	switchSide = new DigitalInput(SWITCHERINO3);
     }
 
     /**
@@ -106,7 +109,10 @@ public class Robot extends SampleRobot {
      * Runs the motors with arcade steering.
      */
     public void operatorControl() {
+    	boolean left = true;
+    	boolean isPressed = false;
         while (isOperatorControl() && isEnabled()) {
+        	
         	// if turned on
         	if (switchBoyz2.get()){
         		// full power
@@ -116,8 +122,14 @@ public class Robot extends SampleRobot {
         		}
         		// half power
         		else {
-        			topShooter.set(0.5);
-        			botShooter.set(-0.5);
+        			if (left){
+        				topShooter.set(1);
+        				botShooter.set(-0.45);
+        			}
+        			else {
+        				topShooter.set(0.25);
+        				botShooter.set(-1);
+        			}
         		}
         	}
         	
@@ -126,7 +138,16 @@ public class Robot extends SampleRobot {
         		topShooter.set(0.0);
         		botShooter.set(0.0);
         	}
-        		
+        	
+        	dash.putBoolean("ayy lmao", switchSide.get());
+        	dash.putBoolean("What the hell", left);
+        	
+        	if (!switchSide.get() && !isPressed){
+        		isPressed = true;
+        		left = !left;
+        	}
+        	if (switchSide.get())
+        		isPressed = false;
         	
         	dash.putNumber("TOP", topShooter.get());
         	dash.putNumber("BOTTOM", botShooter.get());
